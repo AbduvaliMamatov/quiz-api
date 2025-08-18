@@ -9,5 +9,5 @@ public interface IAnswerService
         string answer,
         int timeSpentSeconds,
         CancellationToken cancellationToken = default);
-    Task<UserAnswerResponse?> GetLatestAnswerOrDefaultAsync(int questionId, CancellationToken cancellationToken = default);
+    Task<UserAnswerResponse> GetLatestAnswerAsync(int questionId, CancellationToken cancellationToken = default);
 } 

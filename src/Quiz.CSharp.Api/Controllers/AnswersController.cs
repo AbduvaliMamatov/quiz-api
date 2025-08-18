@@ -35,7 +35,7 @@ public sealed class AnswersController(IAnswerService answerService) : Controller
     [ProducesResponseType<ApiResponse<UserAnswerResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetLatestAnswer(int questionId, CancellationToken cancellationToken)
     {
-        var answer = await answerService.GetLatestAnswerOrDefaultAsync(questionId, cancellationToken);
+        var answer = await answerService.GetLatestAnswerAsync(questionId, cancellationToken);
         return Ok(new ApiResponse<UserAnswerResponse>(answer));
     }
 }

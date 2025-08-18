@@ -237,8 +237,7 @@ public class DataSeedingService(
         var existingCollection = await dbContext.Collections
             .FirstOrDefaultAsync(c => c.Code == metadata.Id, cancellationToken);
 
-        if (existingCollection != null)
-            return existingCollection;
+        if (existingCollection is not null) return existingCollection;
 
         var collection = new Collection
         {
@@ -265,7 +264,7 @@ public class DataSeedingService(
         var existingQuestion = await dbContext.Questions
             .FirstOrDefaultAsync(q => q.CollectionId == collection.Id && q.Prompt == seedQuestion.Prompt, cancellationToken);
 
-        if (existingQuestion != null)
+        if (existingQuestion is not null)
         {
             logger.LogDebug("Question already exists in collection {CollectionId} with prompt: {Prompt}", 
                 collection.Id,
@@ -449,7 +448,7 @@ public class DataSeedingService(
     {
         var hints = new List<QuestionHintData>();
         
-        if (!string.IsNullOrWhiteSpace(explanation))
+        if (string.IsNullOrWhiteSpace(explanation) is false)
         {
             hints.Add(new QuestionHintData
             {
