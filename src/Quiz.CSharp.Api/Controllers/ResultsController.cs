@@ -24,11 +24,7 @@ public sealed class ResultsController(IResultsService resultsService) : Controll
         CancellationToken cancellationToken = default)
     {
         var result = await resultsService.GetAnswerReviewAsync(collectionId, includeUnanswered, cancellationToken);
-        
-        if (result.IsSuccess is false)
-            throw new CustomBadRequestException(result.ErrorMessage ?? "Unable to retrieve answer review");
-
-        return Ok(new ApiResponse<List<QuestionReviewResponse>>(result.Value));
+        return Ok(new ApiResponse<List<QuestionReviewResponse>>(result));
     }
 
     [HttpPost("sessions/{sessionId}/complete")]
@@ -41,10 +37,6 @@ public sealed class ResultsController(IResultsService resultsService) : Controll
         CancellationToken cancellationToken)
     {
         var result = await resultsService.CompleteSessionAsync(sessionId, request, cancellationToken);
-
-        if (result.IsSuccess is false)
-            throw new CustomBadRequestException(result.ErrorMessage ?? "Invalid session completion request");
-
-        return Ok(new ApiResponse<SessionResultsResponse>(result.Value));
+        return Ok(new ApiResponse<SessionResultsResponse>(result));
     }
 } 

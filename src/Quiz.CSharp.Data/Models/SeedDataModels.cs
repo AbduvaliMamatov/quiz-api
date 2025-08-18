@@ -123,8 +123,7 @@ public class AnswerConverter : JsonConverter<List<string>>
             var list = new List<string>();
             while (reader.Read())
             {
-                if (reader.TokenType == JsonTokenType.EndArray)
-                    break;
+                if (reader.TokenType == JsonTokenType.EndArray) break;
                 
                 if (reader.TokenType == JsonTokenType.String)
                     list.Add(reader.GetString() ?? string.Empty);
@@ -137,8 +136,7 @@ public class AnswerConverter : JsonConverter<List<string>>
 
     public override void Write(Utf8JsonWriter writer, List<string> value, JsonSerializerOptions options)
     {
-        if (value.Count == 1)
-            writer.WriteStringValue(value[0]);
+        if (value.Count == 1) writer.WriteStringValue(value[0]);
         else
         {
             writer.WriteStartArray();

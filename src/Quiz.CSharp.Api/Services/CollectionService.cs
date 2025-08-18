@@ -65,7 +65,7 @@ public sealed class CollectionService(
             foreach (var questionRequest in request.Questions)
             {
                 var question = CreateQuestionFromRequest(questionRequest, createdCollection.Id, mapper);
-                if (question != null)
+                if (question is not null)
                 {
                     await questionRepository.CreateQuestionAsync(question, cancellationToken);
                     questionsCreated++;
@@ -92,8 +92,7 @@ public sealed class CollectionService(
     private static Question? CreateQuestionFromRequest(CreateQuestionRequest request, int collectionId, IMapper mapper)
     {
         var questionType = GetQuestionTypeFromString(request.Type);
-        if (questionType == null)
-            return null;
+        if (questionType == null) return null;
 
         Question? question = questionType.Value switch
         {

@@ -31,6 +31,7 @@ public class ExceptionHandlingMiddleware(
                 CustomBadRequestException badRequest => ((int)HttpStatusCode.BadRequest, badRequest.Message),
                 CustomConflictException conflict => ((int)HttpStatusCode.Conflict, conflict.Message),
                 CustomNotFoundException notFound => ((int)HttpStatusCode.NotFound, notFound.Message),
+                CustomUnauthorizedExcetion unauthorized => ((int)HttpStatusCode.Unauthorized, unauthorized.Message),
                 _ => ((int)HttpStatusCode.InternalServerError, "An unexpected error occurred.")
             };
 

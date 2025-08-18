@@ -47,6 +47,7 @@ public sealed class AnswerService(
             };
 
             await answerRepository.SaveAnswerAsync(userAnswer, cancellationToken);
+
             await UpdateUserProgressAsync(
                 currentUser.UserId,
                 question.CollectionId,
@@ -63,18 +64,16 @@ public sealed class AnswerService(
         };
     }
 
-    public async Task<UserAnswerResponse?> GetLatestAnswerOrDefaultAsync(int questionId, CancellationToken cancellationToken = default)
+    public async Task<UserAnswerResponse> GetLatestAnswerAsync(int questionId, CancellationToken cancellationToken = default)
     {
-        if (!currentUser.IsAuthenticated || currentUser.UserId is null)
-            throw new CustomBadRequestException("User not authenticated");
+        if (currentUser is not { IsAuthenticated: true, UserId: not null })
+            throw new CustomUnauthorizedExcetion("User not authenticated");
 
         var answer = await answerRepository.GetLatestAnswerOrDefaultAsync(
             currentUser.UserId,
             questionId,
-            cancellationToken);
-
-        if (answer is null)
-            throw new CustomNotFoundException("Answer not found");
+            cancellationToken)
+            ?? throw new CustomNotFoundException("Answer not found");
 
         return new UserAnswerResponse
         {
@@ -127,8 +126,12 @@ public sealed class AnswerService(
             await userProgressRepository.CreateUserProgressAsync(newProgress, cancellationToken);
         }
 
-        logger.LogInformation(@"Updated progress for user {UserId} in collection {CollectionId}
-        : {AnsweredQuestions}/{TotalQuestions} answered, {CorrectAnswers} correct",
-            userId, collectionId, answeredQuestions, totalQuestions, correctAnswers);
+        logger.LogInformation(
+            @"User {UserId}, Collection {CollectionId}, {Answered}/{Total} answered, {Correct} correct",
+            userId,
+            collectionId,
+            answeredQuestions,
+            totalQuestions,
+            correctAnswers);
     }
 }
