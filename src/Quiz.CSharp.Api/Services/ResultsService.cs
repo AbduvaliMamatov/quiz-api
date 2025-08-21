@@ -84,7 +84,7 @@ public sealed class ResultsService(
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(currentUser.UserId))
-            throw new UnauthorizedAccessException("User is not authenticated");
+            throw new CustomUnauthorizedException("User is not authenticated");
 
         var questions = await questionRepository.GetQuestionsByCollectionAsync(
             collectionId,

@@ -1,4 +1,4 @@
 namespace Quiz.Infrastructure.Exceptions;
 
-public class CustomUnauthorizedExcetion(string errorMessage)
+public class CustomUnauthorizedException(string errorMessage)
 : Exception(errorMessage) { } 

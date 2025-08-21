@@ -67,7 +67,7 @@ public sealed class AnswerService(
     public async Task<UserAnswerResponse> GetLatestAnswerAsync(int questionId, CancellationToken cancellationToken = default)
     {
         if (currentUser is not { IsAuthenticated: true, UserId: not null })
-            throw new CustomUnauthorizedExcetion("User not authenticated");
+            throw new CustomUnauthorizedException("User not authenticated");
 
         var answer = await answerRepository.GetLatestAnswerOrDefaultAsync(
             currentUser.UserId,
